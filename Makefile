@@ -1,8 +1,10 @@
 # Makefile
 
-IMAGE_NAME ?= sbcl-qlot
-IMAGE_TAG  ?= latest
-PLATFORMS  ?= linux/arm64
+IMAGE_NAME     ?= nmunro/roswell
+IMAGE_TAG      ?= 1.0.2
+PLATFORMS      ?= linux/arm64,linux/amd64
+BUILD_PLATFORM  = $(if $(LOCAL),,--platform=$(PLATFORMS))
+BUILD_OUTPUT    = $(if $(LOCAL),--load,--push)
 
 .PHONY: build build-arm64 push manifest builder shell
 
@@ -11,12 +13,12 @@ builder:
 	@docker buildx create --name multi-arch --use --bootstrap 2>/dev/null || \
 	docker buildx use multi-arch
 
-# Build and PUSH a multi-arch image (recommended if you use a registry)
+# Build locally (single-arch, --load) if LOCAL is set, otherwise push multi-arch
 build: builder
-	@docker buildx build --platform=$(PLATFORMS) -t $(IMAGE_NAME):$(IMAGE_TAG) --load .
+	@docker buildx build $(BUILD_PLATFORM) -t $(IMAGE_NAME):$(IMAGE_TAG) $(BUILD_OUTPUT) .
 
-build-arm64: builder
-	@docker buildx build --platform=linux/arm64 -t $(IMAGE_NAME):arm64 --load .
+push: builder
+	@docker buildx build --platform=$(PLATFORMS) -t $(IMAGE_NAME):$(IMAGE_TAG) --push .
 
 shell:
 	@docker run --rm -it --entrypoint /bin/sh $(IMAGE_NAME)
