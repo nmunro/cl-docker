@@ -27,4 +27,4 @@ ENV PATH="/opt/bin:/opt/roswell/bin:${PATH}"
 
 COPY --from=build /opt /opt
 
-RUN apk add --no-cache curl-dev
+RUN apk add --no-cache curl ca-certificates

@@ -1,7 +1,7 @@
 # Makefile
 
 IMAGE_NAME       ?= nmunro/cl-web
-IMAGE_TAG        ?= 26.09-1
+IMAGE_TAG        ?= 26.09-2
 SBCL_VERSION_TAG ?= 2.6.8
 PLATFORMS        ?= linux/arm64,linux/amd64
 
