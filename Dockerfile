@@ -1,4 +1,4 @@
-ARG SBCL_VERSION=sbcl-bin/2.6.8
+ARG SBCL_VERSION=sbcl-bin/2.6.9
 
 FROM cgr.dev/chainguard/wolfi-base AS build
 
